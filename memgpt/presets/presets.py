@@ -8,8 +8,11 @@ DEFAULT_PRESET = "memgpt_chat"
 available_presets = load_all_presets()
 preset_options = list(available_presets.keys())
 
+human_notes = None
+
 
 def use_preset(preset_name, agent_config, model, persona, human, interface, persistence_manager):
+    print(f"Type of human_notes in use_preset: {type(human_notes)}")
     """Storing combinations of SYSTEM + FUNCTION prompts"""
 
     from memgpt.agent import Agent

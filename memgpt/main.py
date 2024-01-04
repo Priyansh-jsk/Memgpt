@@ -388,13 +388,13 @@ def run_agent_loop(memgpt_agent, first, no_verify=False, cfg=None, strip_ui=Fals
     multiline_input = False
     while True:
         if not skip_next_user_input and (counter > 0 or USER_GOES_FIRST):
-            # Ask for user input
-            user_input = questionary.text(
-                "Enter your message:",
-                multiline=multiline_input,
-                qmark=">",
-            ).ask()
-            clear_line(strip_ui)
+            # # Ask for user input
+            # user_input = questionary.text(
+            #     "Enter your message:",
+            #     multiline=multiline_input,
+            #     qmark=">",
+            # ).ask()
+            # clear_line(strip_ui)
 
             # Gracefully exit on Ctrl-C/D
             if user_input is None:

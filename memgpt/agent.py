@@ -4,7 +4,7 @@ import os
 import json
 import traceback
 
-from memgpt.persistence_manager import LocalStateManager
+from memgpt.persistence_manager import InMemoryStateManager, LocalStateManager
 from memgpt.config import AgentConfig
 from .system import get_login_event, package_function_response, package_summarize_message, get_initial_boot_messages
 from .memory import CoreMemory as Memory, summarize_messages
@@ -131,7 +131,7 @@ class Agent(object):
         self.functions_python = {f_name: f_dict["python_function"] for f_name, f_dict in functions.items()}
 
         # Initialize the memory object
-        self.memory = initialize_memory(persona_notes, human_notes)
+        self.memory = initialize_memory(persona_notes, '')
         # Once the memory object is initialize, use it to "bake" the system message
         self._messages = initialize_message_sequence(
             self.model,
@@ -157,7 +157,7 @@ class Agent(object):
         # - set_messages
         # - get_messages
         # - append_to_messages
-        self.persistence_manager = persistence_manager
+        self.persistence_manager =  InMemoryStateManager()
         if persistence_manager_init:
             # creates a new agent object in the database
             self.persistence_manager.init(self)
@@ -364,7 +364,7 @@ class Agent(object):
         # memory requires a nested load
         memory_dict = state["memory"]
         persona_notes = memory_dict["persona"]
-        human_notes = memory_dict["human"]
+        human_notes = ''
 
         # Two-part load
         new_agent = cls(
@@ -388,7 +388,7 @@ class Agent(object):
         # memory requires a nested load
         memory_dict = state["memory"]
         persona_notes = memory_dict["persona"]
-        human_notes = memory_dict["human"]
+        human_notes = ''
         self.memory = initialize_memory(persona_notes, human_notes)
         # messages also
         self._messages = state["messages"]
